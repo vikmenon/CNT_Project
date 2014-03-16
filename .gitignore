@@ -1,6 +1,5 @@
+# Git ignores files of the following types.
+.*
+bin/
 *.class
-
-# Package Files #
-*.jar
-*.war
-*.ear
+!/.gitignore
