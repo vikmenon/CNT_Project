@@ -17,10 +17,7 @@ public class Server {
     private Socket socket = null;
     private ObjectInputStream inStream = null;
  
- 
-    public Server() {
- 
-    }
+    public Server() {}
  
     /**
      * 

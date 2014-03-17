@@ -4,6 +4,11 @@ import com.uf.cise.sp14.cnt.project.protocolManager.messages.HandshakeMsg;
 import com.uf.cise.sp14.cnt.project.protocolManager.messages.MessageType;
 import com.uf.cise.sp14.cnt.project.protocolManager.messages.RegularMsg;
 
+/**
+ * @author Rahul
+ *
+ * This class generates messages to send/receive file or control data with peers.
+ */
 public class MessageGenerator {
 	public HandshakeMsg getHandshakeMessage(int peerID) {
 		HandshakeMsg handshakeMsg = new HandshakeMsg(peerID);
@@ -18,7 +23,8 @@ public class MessageGenerator {
 	public RegularMsg getRegularMsg(int messageLength, MessageType messageType,
 			int index) {
 		byte[] payload = null;
-		switch (messageType.ordinal()) {
+		switch (messageType.ordinal())
+		{
 		case 0:
 		case 1:
 		case 2:
@@ -62,5 +68,4 @@ public class MessageGenerator {
 		}
 		return null;
 	}
-
 }

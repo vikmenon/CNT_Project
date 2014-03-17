@@ -17,9 +17,7 @@ public class Client {
     private ObjectOutputStream outputStream = null;
     private boolean isConnected = false;
  
-    public Client() {
- 
-    }
+    public Client() {}
  
     /**
      * 

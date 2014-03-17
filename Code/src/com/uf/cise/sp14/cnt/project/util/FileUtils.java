@@ -1,4 +1,4 @@
-package com.uf.cise.sp14.cnt.project;
+package com.uf.cise.sp14.cnt.project.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,25 +8,33 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.uf.cise.sp14.cnt.project.constants.ConfigKeys;
 import com.uf.cise.sp14.cnt.project.exception.FileShareException;
-import com.uf.cise.sp14.cnt.project.util.ApplicationUtils;
-import com.uf.cise.sp14.cnt.project.util.ConfigUtils;
 
-public class FileHandler {
+/**
+ * @author vikmenon
+ *
+ * All methods for handling of files during send/receive with peers.
+ */
+public class FileUtils {
 
-	/* Given a file path and the number of parts required, 
+	/**
+	 * Given a file path and the number of parts required, 
 	 * create the file parts in PartsDirectory.
 	 * 
-	 * Returns: 1 => success, 0 => failure
+	 * @param file
+	 * @param parts
+	 * @return boolean: 1 => success, 0 => failure
+	 * @throws FileShareException
 	 */
 	static boolean splitFile(File file, int parts)
 			throws FileShareException {
 		try {
-			int bufferSize = ConfigUtils.getInteger(FileShareConstants.FileReadBufferSize);
+			int bufferSize = ConfigUtils.getInteger(ConfigKeys.FileReadBufferSize);
 			byte[] dataBuffer = new byte[bufferSize];
 			int readBytes = 0;
 			
-			String outFileNamePrefix = ConfigUtils.getString(FileShareConstants.PartsDirectory) + "/" + file.getName() + ConfigUtils.getString(FileShareConstants.PartSuffix);
+			String outFileNamePrefix = ConfigUtils.getString(ConfigKeys.PartsDirectory) + "/" + file.getName() + ConfigUtils.getString(ConfigKeys.PartSuffix);
 			Integer outFileCounter = 0;
 			String outFileName = outFileNamePrefix + outFileCounter.toString();
 			
@@ -59,7 +67,7 @@ public class FileHandler {
 				fOStream.write(dataBuffer, 0, readBytes);
 				
 				// If we cannot read into this part file again, open the next part file.
-				if (outFile.length() + bufferSize > ConfigUtils.getInteger(FileShareConstants.PartSize)) {
+				if (outFile.length() + bufferSize > ConfigUtils.getInteger(ConfigKeys.PartSize)) {
 					fOStream.close();
 					fOStream = null;
 					outFileCounter++;
@@ -79,14 +87,19 @@ public class FileHandler {
 		return true;
 	}
 	
-	/* Given a file name and the expected size, reconstruct it 
+	/**
+	 * Given a file name and the expected size, reconstruct it 
 	 * from all it's parts in PartsDirectory and store in DownloadsDirectory.
 	 * 
-	 * Returns: 1 => success, 0 => failure
+	 * @param fileName
+	 * @param expectedFileLength
+	 * @param deleteParts
+	 * @return boolean: 1 => success, 0 => failure
+	 * @throws FileShareException
 	 */
 	static boolean mergeFile(String fileName, long expectedFileLength, boolean deleteParts)
 			throws FileShareException {
-		String partFileNamePrefix = ConfigUtils.getString(FileShareConstants.PartsDirectory) + "/" + fileName + ConfigUtils.getString(FileShareConstants.PartSuffix);
+		String partFileNamePrefix = ConfigUtils.getString(ConfigKeys.PartsDirectory) + "/" + fileName + ConfigUtils.getString(ConfigKeys.PartSuffix);
 		
 		List<File> partFileList = new ArrayList<File>();
 		Integer partIndex = 0;
@@ -113,13 +126,13 @@ public class FileHandler {
 			/* Reconstruct the file from all it's parts.
 			 */
 			try {
-				String outFileName = ConfigUtils.getString(FileShareConstants.DownloadsDirectory) + "/" + fileName;
+				String outFileName = ConfigUtils.getString(ConfigKeys.DownloadsDirectory) + "/" + fileName;
 				File outFile = new File(outFileName);
 				outFile.getParentFile().mkdirs();
 				outFile.createNewFile();
 				FileOutputStream fOStream = new FileOutputStream(outFile);
 				
-				int bufferSize = ConfigUtils.getInteger(FileShareConstants.FileReadBufferSize);
+				int bufferSize = ConfigUtils.getInteger(ConfigKeys.FileReadBufferSize);
 				byte[] dataBuffer = new byte[bufferSize];
 				int readBytes = 0;
 				
@@ -160,12 +173,23 @@ public class FileHandler {
 		}
 	}
 	
-	/* If not explicitly specified, we delete file parts after merging them. */
+	/**
+	 * If not explicitly specified, we delete file parts after merging them.
+	 * 
+	 * @param fileName
+	 * @param expectedFileLength
+	 * @return
+	 * @throws FileShareException
+	 */
 	static boolean mergeFile(String fileName, long expectedFileLength)
 			throws FileShareException {
 		return mergeFile(fileName, expectedFileLength, true);
 	}
 	
+	/**
+	 * @param args
+	 * @throws FileShareException
+	 */
 	public static void main(String args[]) throws FileShareException {
 		String testFileName = "GDP.csv";
 		File testFile = new File(testFileName);

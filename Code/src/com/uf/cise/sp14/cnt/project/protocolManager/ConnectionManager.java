@@ -1,5 +1,8 @@
 package com.uf.cise.sp14.cnt.project.protocolManager;
 
-public class ConnectionManager {
-
-}
+/**
+ * @author Rahul
+ *
+ * This class manages connections to all the peers of this node on the network.
+ */
+public class ConnectionManager {}

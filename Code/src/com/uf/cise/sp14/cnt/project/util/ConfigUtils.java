@@ -4,7 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import com.uf.cise.sp14.cnt.project.FileShareConstants;
+import com.uf.cise.sp14.cnt.project.constants.ConfigKeys;
 
 public class ConfigUtils {
 	private static final String ConfigsFile = "configs.properties";
@@ -21,7 +21,7 @@ public class ConfigUtils {
 	}
 	
 	public static Boolean isDebug() {
-		return ConfigUtils.getBoolean(FileShareConstants.IsDebug);
+		return ConfigUtils.getBoolean(ConfigKeys.IsDebug);
 	}
 	
 	public static Boolean getBoolean(String key) {
