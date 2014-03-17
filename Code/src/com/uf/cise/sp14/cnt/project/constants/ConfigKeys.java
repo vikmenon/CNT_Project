@@ -40,4 +40,9 @@ public class ConfigKeys {
 	 * This is the size of the buffer used to read and write files.
 	 */
 	public static final String FileReadBufferSize = "FileReadBufferSize";
+	
+	/**
+	 * This is the maximum size of the payload consisting of file data.
+	 */
+	public static final String MaxPayloadSize = "MaxPayloadSize";
 }

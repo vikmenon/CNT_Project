@@ -1,17 +1,12 @@
 package com.uf.cise.sp14.cnt.project.protocolManager.messages;
 
-import java.io.Serializable;
 import java.nio.ByteBuffer;
 
 /**
  * @author Rahul
- *
+ * 
  */
-public class HandshakeMsg implements Serializable{
-	
-	/**
-	 * 
-	 */
+public class HandshakeMsg extends Message {
 	private static final long serialVersionUID = 1L;
 	/**
 	 * this contains "HELLO"

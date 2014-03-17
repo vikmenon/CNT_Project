@@ -27,6 +27,8 @@ public class ApplicationUtils {
 	 * @param fileName
 	 */
 	public static void logServerPortEvent(String msg, Integer port) {
+		ApplicationUtils.printLine(msg);
+		
 		try {
 			// Create the log file if it doesn't exist yet.
 			String fileName = ConfigUtils
@@ -39,7 +41,8 @@ public class ApplicationUtils {
 			BufferedWriter bufferWritter = new BufferedWriter(new FileWriter(logFile, true));
 			bufferWritter.write(msg + "\n");
 			bufferWritter.close();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

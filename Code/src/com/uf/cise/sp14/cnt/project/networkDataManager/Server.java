@@ -6,7 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
-import com.uf.cise.sp14.cnt.project.protocolManager.messages.HandshakeMsg;
+import com.uf.cise.sp14.cnt.project.protocolManager.messages.Message;
 import com.uf.cise.sp14.cnt.project.util.ApplicationUtils;
 
 /**
@@ -21,32 +21,35 @@ public class Server {
 	private Socket socket = null;
 	private ObjectInputStream inStream = null;
 
+	/**
+	 * This method sets up the server, and waits for a client to connect to it.
+	 */
 	public Server(Integer myPort) {
 		ApplicationUtils.logServerPortEvent("Creating server on port: " + myPort, myPort);
 		port = myPort;
+		
+		try {
+			// Bind a server socket to this port
+			serverSocket = new ServerSocket(port);
+			
+			// Listen for incoming connections
+			socket = serverSocket.accept();
+			inStream = new ObjectInputStream(socket.getInputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		ApplicationUtils.logServerPortEvent("Server on " + port + " has connected to a client.", port);
 	}
 
 	/**
-     * This message reads a Handshake message from any peer that connects to it.
+     * This message reads a Message sent by the connected client.
      */
-	public void waitForHandshake() {
+	public Message waitForMessage() {
+		Message message = null;
 		try {
-			/* Listen for incoming connections. */
-			serverSocket = new ServerSocket(port);
-			socket = serverSocket.accept();
-
-			ApplicationUtils.printLine("Server has connected to a client.");
-			ApplicationUtils.logServerPortEvent("Server on " + port + " has connected to a client.", port);
-
-			inStream = new ObjectInputStream(socket.getInputStream());
-
-			HandshakeMsg msg = (HandshakeMsg) inStream.readObject();
-
-			ApplicationUtils.printLine("Object received = " + msg);
-			ApplicationUtils.logServerPortEvent("Object received = " + msg, port);
-
-			socket.close();
-	        ApplicationUtils.printLine("Read of Object is complete!");
+			message = (Message) inStream.readObject();
+			ApplicationUtils.logServerPortEvent("Object received = " + message, port);
 		} catch (SocketException se) {
 			ApplicationUtils.exit(0, "ERR: SocketException was thrown!");
 		} catch (IOException e) {
@@ -54,5 +57,20 @@ public class Server {
 		} catch (ClassNotFoundException cn) {
 			cn.printStackTrace();
 		}
+		
+		return message;
+	}
+
+	/**
+	 * This method tears down the server, and closes the socket bound to the port.
+	 */
+	public void close() {
+		try {
+			inStream.close();
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		ApplicationUtils.logServerPortEvent("Server is shutting down.", port);
 	}
 }
