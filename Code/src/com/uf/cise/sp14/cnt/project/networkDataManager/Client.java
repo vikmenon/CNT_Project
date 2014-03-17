@@ -29,7 +29,7 @@ public class Client {
     }
  
     /**
-     * 
+     * This method sends out a Handshake message to the targeted peer.
      */
     public void sendHandshake(Integer peerID) {
     	// Keep trying to connect to server until we succeed.
@@ -53,5 +53,6 @@ public class Client {
                 e.printStackTrace();
             }
         }
+        ApplicationUtils.printLine("Write of Object is complete!");
     }
 }

@@ -27,7 +27,7 @@ public class Server {
 	}
 
 	/**
-     *
+     * This message reads a Handshake message from any peer that connects to it.
      */
 	public void waitForHandshake() {
 		try {
@@ -46,6 +46,7 @@ public class Server {
 			ApplicationUtils.logServerPortEvent("Object received = " + msg, port);
 
 			socket.close();
+	        ApplicationUtils.printLine("Read of Object is complete!");
 		} catch (SocketException se) {
 			ApplicationUtils.exit(0, "ERR: SocketException was thrown!");
 		} catch (IOException e) {
