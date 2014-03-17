@@ -1,5 +1,8 @@
 # Git ignores files of the following types.
 .*
 bin/
+downloads/
+partFiles/
+bin/
 *.class
 !/.gitignore

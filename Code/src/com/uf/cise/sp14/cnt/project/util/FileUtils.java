@@ -27,7 +27,7 @@ public class FileUtils {
 	 * @return boolean: 1 => success, 0 => failure
 	 * @throws FileShareException
 	 */
-	static boolean splitFile(File file, int parts)
+	public static boolean splitFile(File file, int parts)
 			throws FileShareException {
 		try {
 			int bufferSize = ConfigUtils.getInteger(ConfigKeys.FileReadBufferSize);
@@ -97,7 +97,7 @@ public class FileUtils {
 	 * @return boolean: 1 => success, 0 => failure
 	 * @throws FileShareException
 	 */
-	static boolean mergeFile(String fileName, long expectedFileLength, boolean deleteParts)
+	public static boolean mergeFile(String fileName, long expectedFileLength, boolean deleteParts)
 			throws FileShareException {
 		String partFileNamePrefix = ConfigUtils.getString(ConfigKeys.PartsDirectory) + "/" + fileName + ConfigUtils.getString(ConfigKeys.PartSuffix);
 		
@@ -181,20 +181,8 @@ public class FileUtils {
 	 * @return
 	 * @throws FileShareException
 	 */
-	static boolean mergeFile(String fileName, long expectedFileLength)
+	public static boolean mergeFile(String fileName, long expectedFileLength)
 			throws FileShareException {
 		return mergeFile(fileName, expectedFileLength, true);
-	}
-	
-	/**
-	 * @param args
-	 * @throws FileShareException
-	 */
-	public static void main(String args[]) throws FileShareException {
-		String testFileName = "GDP.csv";
-		File testFile = new File(testFileName);
-		
-//		splitFile(testFile, 10);
-		mergeFile(testFileName, testFile.length());
 	}
 }
