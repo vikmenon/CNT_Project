@@ -15,24 +15,32 @@ public class ConfigUtils {
 			properties.load(new FileInputStream(ConfigUtils.ConfigsFile));
 			ApplicationUtils.printLine("Configs: " + properties.toString());
 		} catch (IOException e) {
-			ApplicationUtils.printLine("ERR: Could not load: " + ConfigsFile);
-			System.exit(1);
+			ApplicationUtils.exit(1, "ERR: Could not load: " + ConfigsFile);
 		}
+	}
+	
+	public static String getConfig(String key) {
+		String retVal = properties.getProperty(key);
+		if (null == retVal) {
+			// If the requested configuration was not set, then we should terminate.
+			ApplicationUtils.exit(1, "ERR: Configuration is not set: " + key);
+		}
+		return retVal;
+	}
+	
+	public static Boolean getBoolean(String key) {
+		return Boolean.valueOf( getConfig(key) );
+	}
+	
+	public static String getString(String key) {
+		return getConfig(key);
+	}
+	
+	public static Integer getInteger(String key) {
+		return Integer.valueOf( getConfig(key) );
 	}
 	
 	public static Boolean isDebug() {
 		return ConfigUtils.getBoolean(ConfigKeys.IsDebug);
-	}
-	
-	public static Boolean getBoolean(String key) {
-		return Boolean.valueOf( properties.getProperty(key) );
-	}
-	
-	public static String getString(String key) {
-		return properties.getProperty(key);
-	}
-	
-	public static Integer getInteger(String key) {
-		return Integer.valueOf( properties.getProperty(key) );
 	}
 }

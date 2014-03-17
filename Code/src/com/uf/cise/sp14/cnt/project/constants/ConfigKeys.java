@@ -20,6 +20,11 @@ public class ConfigKeys {
 	 * This is the directory where we hold files that have finished downloading.
 	 */
 	public static final String DownloadsDirectory = "DownloadsDirectory";
+
+	/**
+	 * This is the directory where we write out logfiles.
+	 */
+	public static final String LogsDirectory = "LogsDirectory";
 	
 	/**
 	 * This is the suffix used to indicate a file part.

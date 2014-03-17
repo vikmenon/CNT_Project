@@ -59,6 +59,8 @@ public class FileUtils {
 						outFile.createNewFile();
 						fOStream = new FileOutputStream(outFile);
 					} catch (FileNotFoundException e) {
+						fIStream.close();
+						fOStream.close();
 						throw new FileShareException("ERR: Could not create the part file: " + outFileName, e);
 					}
 				}

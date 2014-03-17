@@ -7,50 +7,51 @@ import java.net.SocketException;
 
 import com.uf.cise.sp14.cnt.project.protocolManager.MessageGenerator;
 import com.uf.cise.sp14.cnt.project.protocolManager.messages.HandshakeMsg;
+import com.uf.cise.sp14.cnt.project.util.ApplicationUtils;
  
 /**
  * @author Rahul
  *
+ * This class reaches out to peers and sets up connections.
  */
 public class Client {
+	private String targetHost;
+	private Integer targetPort;
+	
     private Socket socket = null;
     private ObjectOutputStream outputStream = null;
     private boolean isConnected = false;
  
-    public Client() {}
+    public Client(String host, Integer port) {
+		ApplicationUtils.printLine("Creating client to: " + host + ":" + port);
+    	targetHost = host;
+    	targetPort = port;
+    }
  
     /**
      * 
      */
-    public void communicate() {
- 
+    public void sendHandshake(Integer peerID) {
+    	// Keep trying to connect to server until we succeed.
         while (!isConnected) {
             try {
-                socket = new Socket("localHost", 4445);
-                System.out.println("Connected");
+                socket = new Socket(targetHost, targetPort);
                 isConnected = true;
+                
+                ApplicationUtils.printLine("Client has connected to the server: " + targetHost + ":" + targetPort);
                 outputStream = new ObjectOutputStream(socket.getOutputStream());
-                MessageGenerator msgGen = new MessageGenerator();
-                //TODO for testing only
-                HandshakeMsg msg = msgGen.getHandshakeMessage(1234);
-                System.out.println("Object to be written = " + msg);
+                
+                HandshakeMsg msg = MessageGenerator.getHandshakeMessage(peerID);
+
+                ApplicationUtils.printLine("Object to be written = " + msg);
                 outputStream.writeObject(msg);
- 
- 
+                
+                socket.close();
             } catch (SocketException se) {
                 se.printStackTrace();
-                // System.exit(0);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-    }
- 
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-        Client client = new Client();
-        client.communicate();
     }
 }

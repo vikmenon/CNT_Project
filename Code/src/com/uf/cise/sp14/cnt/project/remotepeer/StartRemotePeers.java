@@ -8,8 +8,12 @@ package com.uf.cise.sp14.cnt.project.remotepeer;
  * It is your responsibility to adapt this program to your running environment.
  */
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.Vector;
+
+import com.uf.cise.sp14.cnt.project.constants.FileSharerConstants;
+import com.uf.cise.sp14.cnt.project.util.ApplicationUtils;
 
 /*
  * The StartRemotePeers class begins remote peer processes. 
@@ -18,67 +22,62 @@ import java.util.*;
  * Please look at the lines below the comment saying IMPORTANT.
  */
 public class StartRemotePeers {
-
+	private static final String PeerInfoFile = "PeerInfo.cfg";
+	
+	/* Hold the peer information read from the peer info file. */
 	public Vector<RemotePeerInfo> peerInfoVector;
 	
 	public void getConfiguration()
 	{
-		String st;
-		int i1;
+		String buf;
 		peerInfoVector = new Vector<RemotePeerInfo>();
 		try {
-			BufferedReader in = new BufferedReader(new FileReader("PeerInfo.cfg"));
-			while((st = in.readLine()) != null) {
-				
-				 String[] tokens = st.split("\\s+");
-		    	 //System.out.println("tokens begin ----");
-			     //for (int x=0; x<tokens.length; x++) {
-			     //    System.out.println(tokens[x]);
-			     //}
-		         //System.out.println("tokens end ----");
-			    
-			     peerInfoVector.addElement(new RemotePeerInfo(tokens[0], tokens[1], tokens[2]));
-			
+			BufferedReader in = new BufferedReader(new FileReader(StartRemotePeers.PeerInfoFile));
+			while((buf = in.readLine()) != null) {
+				String[] tokens = buf.split("\\s+");
+				peerInfoVector.addElement(new RemotePeerInfo(tokens[0], tokens[1], tokens[2]));
 			}
-			
 			in.close();
 		}
 		catch (Exception ex) {
-			System.out.println(ex.toString());
+			ApplicationUtils.printLine(ex.toString());
 		}
 	}
 	
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	public Vector<RemotePeerInfo> startConfiguredPeers() {
 		try {
-			StartRemotePeers myStart = new StartRemotePeers();
-			myStart.getConfiguration();
-					
+			getConfiguration();
+			
 			// get current path
 			String path = System.getProperty("user.dir");
 			
 			// start clients at remote hosts
-			for (int i = 0; i < myStart.peerInfoVector.size(); i++) {
-				RemotePeerInfo pInfo = (RemotePeerInfo) myStart.peerInfoVector.elementAt(i);
+			for (int i = 0; i < this.peerInfoVector.size(); i++) {
+				RemotePeerInfo pInfo = (RemotePeerInfo) this.peerInfoVector.elementAt(i);
+				ApplicationUtils.printLine("Start remote peer " + pInfo.peerId +  " at " + pInfo.address );
 				
-				System.out.println("Start remote peer " + pInfo.peerId +  " at " + pInfo.peerAddress );
-				
-				// *********************** IMPORTANT *************************** //
-				// If your program is JAVA, use this line.
-				Runtime.getRuntime().exec("ssh " + pInfo.peerAddress + " cd " + path + "; java peerProcess " + pInfo.peerId);
-				
-				// If your program is C/C++, use this line instead of the above line. 
-				//Runtime.getRuntime().exec("ssh " + pInfo.peerAddress + " cd " + path + "; ./peerProcess " + pInfo.peerId);
-			}		
-			System.out.println("Starting all remote peers has done." );
-
+				// Start this peer process
+/* SERVER:
+				Runtime.getRuntime().exec("ssh " + pInfo.address + " cd " + path + "; java " + FileSharerConstants.PeerExecutableName +  " " + pInfo.peerId);
+ */
+/* LOCAL: */
+/* (LINUX)		String[] cmd = { "/bin/sh", "-c", "cd " + path }; */
+				ApplicationUtils.printLine(path);
+				String[] cmd = { "C:/Windows/System32/cmd", "/C", "cd " + path };
+				Runtime applicationRuntime = Runtime.getRuntime();
+				applicationRuntime.exec(cmd);
+				applicationRuntime.exec("java " + FileSharerConstants.PeerExecutableName +  " " + pInfo.peerId + " " + pInfo.port);
+			}
+			
+			ApplicationUtils.printLine("Starting all remote peers has done." );
 		}
 		catch (Exception ex) {
-			System.out.println(ex);
+			ApplicationUtils.printLine(ex.toString());
 		}
+		
+		return peerInfoVector;
 	}
-
 }
