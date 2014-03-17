@@ -1,4 +1,4 @@
-package peersManager;
+package com.uf.cise.sp14.cnt.project.remotePeerMgr;
 
 import java.util.HashMap;
 
@@ -7,7 +7,6 @@ import java.util.HashMap;
  *
  */
 public class PeersMap {
-	
 	/**
 	 * this is a mapping of peer ID and the peer info of all the peers in the connection
 	 */
@@ -25,7 +24,4 @@ public class PeersMap {
 	public String toString() {
 		return "PeersMap [peersMap=" + peersMap + "]";
 	} 
-	
-	
-
 }

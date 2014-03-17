@@ -1,7 +1,6 @@
 /* TODO:
  * 
  * HACK: 4 bytes used for messageType enum
- * logEvents
  * Delete part files after complete send?
  */
 
@@ -18,8 +17,8 @@ import com.uf.cise.sp14.cnt.project.protocolManager.MessageGenerator;
 import com.uf.cise.sp14.cnt.project.protocolManager.messages.HandshakeMsg;
 import com.uf.cise.sp14.cnt.project.protocolManager.messages.Message;
 import com.uf.cise.sp14.cnt.project.protocolManager.messages.RegularMsg;
-import com.uf.cise.sp14.cnt.project.remotepeer.RemotePeerInfo;
-import com.uf.cise.sp14.cnt.project.remotepeer.StartRemotePeers;
+import com.uf.cise.sp14.cnt.project.remotePeerMgr.RemotePeerInfo;
+import com.uf.cise.sp14.cnt.project.remotePeerMgr.StartRemotePeers;
 import com.uf.cise.sp14.cnt.project.util.ApplicationUtils;
 import com.uf.cise.sp14.cnt.project.util.FileUtils;
 import com.uf.cise.sp14.cnt.project.util.FileUtils.FileOperation;

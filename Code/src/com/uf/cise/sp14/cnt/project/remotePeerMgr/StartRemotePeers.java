@@ -1,4 +1,5 @@
-package com.uf.cise.sp14.cnt.project.remotepeer;
+package com.uf.cise.sp14.cnt.project.remotePeerMgr;
+
 /*
  *                     CEN5501C Project2
  * This is the program starting remote processes.

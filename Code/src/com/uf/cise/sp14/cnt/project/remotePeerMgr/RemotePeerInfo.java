@@ -1,4 +1,4 @@
-package com.uf.cise.sp14.cnt.project.remotepeer;
+package com.uf.cise.sp14.cnt.project.remotePeerMgr;
 
 import com.uf.cise.sp14.cnt.project.networkDataManager.Client;
 import com.uf.cise.sp14.cnt.project.networkDataManager.Server;
